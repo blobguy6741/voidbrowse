@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0713">
+<title>VoidBrowse</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;padding:24px;
+  display:grid;place-items:center;
+  background:radial-gradient(ellipse at 50% 0%,#351653,transparent 60%),#0b0713;
+  color:#f7f2ff;font-family:system-ui,sans-serif
+}
+main{width:min(100%,620px)}
+header{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:55px}
+.logo{background:linear-gradient(135deg,#c4a7ff,#6d28d9);padding:12px;border-radius:14px;font-size:25px}
+h1{font-size:24px;margin:0}
+.tag{font-size:10px;letter-spacing:3px;color:#a99abf}
+.eyebrow{text-align:center;color:#c4a7ff;text-transform:uppercase;letter-spacing:3px;font-size:11px}
+h2{text-align:center;font-size:clamp(36px,8vw,58px);letter-spacing:-2px;line-height:1.1}
+h2 span{color:#a78bfa}
+.intro{text-align:center;color:#b9a9cf;line-height:1.7;margin-bottom:32px}
+.panel{background:#171021;border:1px solid #493267;border-radius:20px;padding:24px;box-shadow:0 20px 70px #0007}
+label{display:block;font-size:12px;color:#d8c8f1;margin-bottom:10px}
+input{width:100%;padding:15px;background:#0c0912;border:1px solid #493267;border-radius:10px;color:white;font:inherit;outline:none}
+input:focus{border-color:#a78bfa}
+button{width:100%;padding:14px;margin-top:12px;border:0;border-radius:10px;background:linear-gradient(100deg,#7c3aed,#a855f7);color:white;font:inherit;font-weight:bold;cursor:pointer}
+button:hover{filter:brightness(1.15)}
+.hint{text-align:center;color:#a99abf;font-size:12px;line-height:1.6;margin-top:18px}
+.error{color:#fca5a5;text-align:center;font-size:13px}
+footer{text-align:center;color:#81728f;font-size:11px;margin-top:25px;line-height:1.8}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="logo">✳</div>
+<div><h1>VoidBrowse</h1><div class="tag">YOUR WEB, YOUR WAY</div></div>
+</header>
+<p class="eyebrow">A different way to explore</p>
+<h2>Explore the web.<br><span>Your way.</span></h2>
+<p class="intro">A sleek gateway for browsing supported websites.</p>
+<section class="panel">
+<form id="unlock" action="/unlock" method="post">
+<label for="key">ACCESS KEY</label>
+<input id="key" name="key" type="password" placeholder="Enter your access key" required>
+<button type="submit">Unlock VoidBrowse →</button>
+</form>
+<form id="browse" action="/go" method="get" hidden>
+<label for="url">WEBSITE ADDRESS</label>
+<input id="url" name="url" type="text" placeholder="https://example.com" required>
+<button type="submit">Open website ↗</button>
+</form>
+<p id="error" class="error" hidden>Access denied. Check your key.</p>
+<p id="hint" class="hint">Enter the access key supplied by the site owner.</p>
+</section>
+<footer>VOIDBROWSE · DARK MODE, BY DESIGN<br>Some websites may not support proxy browsing.</footer>
+</main>
+<script>
+const params=new URLSearchParams(location.search);
+if(params.has("error"))document.getElementById("error").hidden=false;
+fetch("/session",{credentials:"same-origin"}).then(r=>{
+ if(r.ok){
+  document.getElementById("unlock").hidden=true;
+  document.getElementById("browse").hidden=false;
+  document.getElementById("hint").textContent="Enter a full web address beginning with https://";
+ }
+}).catch(()=>{});
+</script>
+</body>
+</html>
